@@ -10,6 +10,9 @@ class GLBuffer {
         this.bufferHandle = this.ctx.createBuffer();
     }
 
+    dump() { 
+        this.ctx.deleteBuffer(this.bufferHandle);
+    }
     initializeFromArray(arr) {
         this.data = arr;
         this.ctx.bindBuffer(this.ctx.ARRAY_BUFFER,this.bufferHandle);

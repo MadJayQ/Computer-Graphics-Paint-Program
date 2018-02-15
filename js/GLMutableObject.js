@@ -9,5 +9,6 @@ class GLMutableObject extends GLObject {
             0,
             0 
         );
+        this.primitiveType = glContext.LINE_STRIP;
     }
 };

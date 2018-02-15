@@ -9,6 +9,8 @@ var includes = [
     "js/GLMutableObject.js",
     "js/GLCursor.js",
     "js/GLBrush.js",
+    "js/GLRectangleBrush.js",
+    "js/GLMatrix.js"
 ];
 
 var start = 0;
@@ -27,7 +29,7 @@ class App {
         var canvas = $('#paintCanvas')[0];
         this.renderer = new GLCanvas(canvas);
         this.cursor = new GLCursor(this.renderer);
-        this.activeBrush = new GLBrush(this.renderer.gl);
+        this.activeBrush = new GLRectangleBrush(this.renderer.gl);
         console.log("Running WebGL Version: " + this.renderer.gl.getParameter(this.renderer.gl.VERSION));
         this.glInitCallback();
     }
@@ -36,9 +38,9 @@ class App {
             Do any initialization in here
         */
         start = Date.now();
-        GlobalVars.getInstance().setTickrate(30);
+        GlobalVars.getInstance().setTickrate(60);
         this.cursor.onPolygonStart = () => {
-            this.activeBrush.strokeBegin(this.renderer.allocateObject(true));
+            this.activeBrush.strokeBegin(this.renderer.allocateObject(false));
         };
         this.cursor.onPolygonEnd = () => {
             this.activeBrush.strokeEnd();

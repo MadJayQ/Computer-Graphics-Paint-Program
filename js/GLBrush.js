@@ -19,8 +19,13 @@ class GLBrush {
     }
 
     finalizeStroke() {
+        if(this.activeObject == null) return;
         if(this.activeObject instanceof GLMutableObject) {
             this.activeObject.positionBuffer.streamDataToBuffer(this.vertices);
+            this.vertices = [];
+        } else {
+            console.log(this.activeObject);
+            this.activeObject.positionBuffer.initializeFromArray(this.vertices);
             this.vertices = [];
         }
     }

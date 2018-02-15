@@ -10,10 +10,11 @@ class GLCursor {
     constructor(canvas) {
         this.clicked = false;
         this.canvas = canvas;
+        this.htmlcanvas = this.canvas.canvas;
         var self = this;
-        canvas.addEventListener("mousemove", (event) => {self.onMouseMove(event);});
-        canvas.addEventListener("mousedown", () => { self.onMouseButtonChange(true); });
-        canvas.addEventListener("mouseup", () => {self.onMouseButtonChange(false);}); 
+        this.htmlcanvas.addEventListener("mousemove", (event) => {self.onMouseMove(event);});
+        this.htmlcanvas.addEventListener("mousedown", () => { self.onMouseButtonChange(true); });
+        this.htmlcanvas.addEventListener("mouseup", () => {self.onMouseButtonChange(false);}); 
 
         this.aggregatedInput = [];
         this.drawing = false;
@@ -22,7 +23,7 @@ class GLCursor {
     }
 
     translateEventCoordinates(event) {
-        var rect = this.canvas.getBoundingClientRect();
+        var rect = this.htmlcanvas.getBoundingClientRect();
         return {
           x: event.clientX - rect.left,
           y: event.clientY - rect.top
@@ -41,11 +42,12 @@ class GLCursor {
     onMouseMove(event) {
         //var x = 2 * event.clientX / this.canvas.width - 1;
         //var y = 2 * (this.canvas.height - event.clientY) / this.canvas.height - 1;
-        var rect = this.canvas.getBoundingClientRect();
-        var w = (rect.right - rect.left);
-        var h = (rect.top - rect.bottom);
-        var x = (event.clientX - rect.left) / w;
-        var y = -(event.clientY - rect.top) / h;
+        var x = event.clientX; // x coordinate of a mouse pointer
+        var y = event.clientY; // y coordinate of a mouse pointer
+        var rect = event.target.getBoundingClientRect();
+        var canvas = this.htmlcanvas;
+        x = ((x - rect.left) - canvas.width/2)/(canvas.width/2);
+        y = (canvas.height/2 - (y - rect.top))/(canvas.height/2);
         
         //if(this.clicked) alert("X: " + x + " Y: " + y);
         var input = new CursorInput(this.clicked, x, y);

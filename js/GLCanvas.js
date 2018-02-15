@@ -13,6 +13,7 @@ class GLCanvas {
         mainProgram.shaders.set("VERTEX", new Shader(this.gl.VERTEX_SHADER, "shaders/vertex.glsl", this.gl));
         mainProgram.shaders.set("FRAGMENT", new Shader(this.gl.FRAGMENT_SHADER, "shaders/fragment.glsl", this.gl));
         mainProgram.attachAndLink();
+
     }
 
     allocateObject(mutable = false) {
@@ -53,9 +54,12 @@ class GLCanvas {
         var mathhelper = MathHelper.getInstance();
 
         var vertexLocation = this.programs.get("MAIN").getAttributeLocation("vPosition");
+        var matrixLocation = this.programs.get("MAIN").getUniformLocation("u_viewMatrix");
+
+        var m = MatrixBuilder.identity();
 
         obj.setupBufferAttributes(vertexLocation, obj.positionBuffer);
-
+        this.gl.uniformMatrix4fv(matrixLocation, false, m);
         obj.draw();
     }
 };

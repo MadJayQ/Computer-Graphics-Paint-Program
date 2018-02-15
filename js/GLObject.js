@@ -1,7 +1,15 @@
 class GLObject {
     constructor(glContext) {
         this.ctx = glContext;
-        this.primitiveType = this.ctx.TRIANGLES;
+        this.primitiveType = this.ctx.POINTS;
+        this.positionBuffer = new GLBuffer(
+            glContext, 
+            2,
+            glContext.FLOAT,
+            false,
+            0,
+            0 
+        );
     }
 
     setupBufferAttributes(attribute, buffer) {
@@ -18,6 +26,6 @@ class GLObject {
     }
 
     draw() {
-        this.ctx.drawArrays(this.ctx.POINTS, 0, this.positionBuffer.data.length / this.positionBuffer.size);
+        this.ctx.drawArrays(this.primitiveType, 0, this.positionBuffer.data.length / this.positionBuffer.size);
     }
 }

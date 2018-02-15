@@ -25,6 +25,9 @@ class GLProgram {
     getAttributeLocation(name) {
         return this.ctx.getAttribLocation(this.innerProgram, name);
     }
+    getUniformLocation(name) {
+        return this.ctx.getUniformLocation(this.innerProgram, name);
+    }
 
     link(cleanup = true) {
         this.ctx.linkProgram(this.innerProgram);
