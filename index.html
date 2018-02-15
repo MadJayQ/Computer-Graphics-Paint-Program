@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="js/math.js"></script>
+        <script src="js/globalvars.js"></script>
+    </head>
+    <body>
+        <div id="toolContainer">
+            <!---
+                Stuff and things here
+            -->
+            <h2>Tools</h2>
+        </div>
+        <div id="canvasContainer">
+            <canvas id="paintCanvas">
+                <h1 style="color: red">YOUR BROWSER DOES NOT SUPPORT HTML5 CANVAS!</h1>
+            </canvas>
+        </div>
+        <div id="layerContainer">
+            <!--
+                Layer stuff and things
+            -->
+            <h2>Layers</h2>
+        </div>
+        <script language="JavaScript">
+            var debug = null;
+            $(document).ready(() => {
+
+                if(window.location.protocol == 'file:') {
+                    alert("You HAVE to run this app from a web server to get it to run due to the AJAX calls, XAMPP or Node will work");
+                }
+                var mainScript = "js/app.js";
+                $.ajaxSetup({
+                    cache: true,
+                    async: false
+                });
+                $.getScript(mainScript, (data, status, jqxhr) => {
+                    console.log("Loaded: " + mainScript + " status: (" + jqxhr.status + ")" + status);
+                });
+                var app = new App();
+                
+                app.glInitCallback = () => {
+                    console.log("WebGL has been set up and shaders have been loaded!");
+                };
+                debug = app;
+                app.onPageLoad();
+                app.main();
+            });
+        </script>
+    </body>
+</html>
