@@ -1,15 +1,23 @@
 class GLBrush {
     constructor(glContext, canvas) {
+        this.canvas = canvas;
         this.ctx = glContext;
         this.activeObject = null;
         this.vertices = [];
+
+        this.mutable = true;
     }
 
-    strokeBegin(newObject) {
+
+    interceptKeyEvent(event) {
+        
+    }
+
+    strokeBegin(newObject, pos) {
         this.activeObject = newObject;
     }
 
-    strokeEnd() {
+    strokeEnd(pos) {
         this.activeObject = null;
     }
 
@@ -24,7 +32,7 @@ class GLBrush {
             this.activeObject.positionBuffer.streamDataToBuffer(this.vertices);
             this.vertices = [];
         } else {
-            console.log(this.activeObject);
+            this.vertices = this.construct();
             this.activeObject.positionBuffer.initializeFromArray(this.vertices);
             this.vertices = [];
         }

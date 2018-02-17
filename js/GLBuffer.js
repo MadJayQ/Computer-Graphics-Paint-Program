@@ -13,14 +13,18 @@ class GLBuffer {
     dump() { 
         this.ctx.deleteBuffer(this.bufferHandle);
     }
-    initializeFromArray(arr) {
+    initializeFromArray(arr) {  
         this.data = arr;
         this.ctx.bindBuffer(this.ctx.ARRAY_BUFFER,this.bufferHandle);
         this.ctx.bufferData(
             this.ctx.ARRAY_BUFFER,
-            arr, 
+            new Float32Array(arr), 
             this.ctx.STATIC_DRAW
         );
+    }
+
+    bufferSize() {
+        return this.ctx.getBufferParameter(this.ctx.ARRAY_BUFFER, this.ctx.BUFFER_SIZE);
     }
 
     bind() {

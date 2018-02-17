@@ -8,9 +8,12 @@ var includes = [
     "js/GLStreamableBuffer.js",
     "js/GLMutableObject.js",
     "js/GLCursor.js",
-    "js/GLBrush.js",
-    "js/GLRectangleBrush.js",
-    "js/GLMatrix.js"
+    "js/GLMatrix.js",
+    "js/brushes/GLBrush.js",
+    "js/brushes/GLRectangleBrush.js",
+    "js/brushes/GLLineBrush.js",
+    "js/brushes/GLPolygonBrush.js",
+    "js/brushes/GLCircleBrush.js",
 ];
 
 var start = 0;
@@ -29,9 +32,21 @@ class App {
         var canvas = $('#paintCanvas')[0];
         this.renderer = new GLCanvas(canvas);
         this.cursor = new GLCursor(this.renderer);
-        this.activeBrush = new GLRectangleBrush(this.renderer.gl);
+        this.activeBrush = new GLPolygonBrush(this.renderer.gl, canvas);
         console.log("Running WebGL Version: " + this.renderer.gl.getParameter(this.renderer.gl.VERSION));
         this.glInitCallback();
+    }
+
+    generateObject() {
+        return this.renderer.allocateObject(this.activeBrush.mutable);
+    }
+    setupListener() {
+        var container = $('#canvasContainer')[0];
+        container.setAttribute("tabindex", 0);
+        var self = this;
+        container.addEventListener('keydown', function (e) { 
+            self.activeBrush.interceptKeyEvent(e);
+        });
     }
     main() {
         /*
@@ -39,13 +54,16 @@ class App {
         */
         start = Date.now();
         GlobalVars.getInstance().setTickrate(60);
-        this.cursor.onPolygonStart = () => {
-            this.activeBrush.strokeBegin(this.renderer.allocateObject(false));
+        GlobalVars.getInstance().timescale = 1.0;
+        this.cursor.onPolygonStart = (pos) => {
+            var strokeObject = (this.activeBrush.activeObject != null) ? this.activeBrush.activeObject : this.generateObject();
+            this.activeBrush.strokeBegin(strokeObject, pos);
         };
-        this.cursor.onPolygonEnd = () => {
-            this.activeBrush.strokeEnd();
+        this.cursor.onPolygonEnd = (pos) => {
+            this.activeBrush.strokeEnd(pos);
         };
 
+        this.setupListener();
         this.loop();
     }
 
@@ -56,7 +74,7 @@ class App {
         var delta = time - globals.lasttime;
         var targettime = globals.tickinterval * 1000;
 
-        delta *= globals.timescale;
+        delta *= globals.timescale; //Boilerplate, what this has to do w/ a paint program I have no clue
 
         globals.lasttime = time;
         globals.frametime += delta;

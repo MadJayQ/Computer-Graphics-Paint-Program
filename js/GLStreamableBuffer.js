@@ -12,7 +12,7 @@ class GLStreamableBuffer extends GLBuffer {
         this.bind();
         var estimatedSize = this.data.length + newData.length;
         var currSize = this.numPages * pageSize;
-        console.log("Buffer size: " + this.ctx.getBufferParameter(this.ctx.ARRAY_BUFFER, this.ctx.BUFFER_SIZE) + " Estimated Size: " + estimatedSize);
+        //console.log("Buffer size: " + this.ctx.getBufferParameter(this.ctx.ARRAY_BUFFER, this.ctx.BUFFER_SIZE) + " Estimated Size: " + estimatedSize);
         if(estimatedSize > currSize) {
             //We need to allocate a new page
             //this.allocatePage();
@@ -21,7 +21,17 @@ class GLStreamableBuffer extends GLBuffer {
         //this.ctx.bufferSubData(this.ctx.ARRAY_BUFFER, this.streamIndex, new Float32Array(newData));
         //this.streamIndex += (newData.length > 0 ) ? (newData.length - 1) : 0;
         this.data = this.data.concat(newData);
-        console.log(this.data);
+        //console.log(this.data);
+        this.ctx.bufferData(this.ctx.ARRAY_BUFFER, new Float32Array(this.data), this.ctx.DYNAMIC_DRAW);
+    }
+
+    overrideVertex(newPos, n) {
+        var idx = (this.data.length - 1) - (n * this.size);
+        this.data[idx] = newPos.y;
+        this.data[idx - 1] = newPos.x;
+        /*
+            This is uh, really stupid but i'm kinda crunched for time here so ¯\_(ツ)_/¯
+        */
         this.ctx.bufferData(this.ctx.ARRAY_BUFFER, new Float32Array(this.data), this.ctx.DYNAMIC_DRAW);
     }
     allocatePage() {
