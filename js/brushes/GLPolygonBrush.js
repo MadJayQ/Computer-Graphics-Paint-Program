@@ -2,6 +2,7 @@ class GLPolygonBrush extends GLBrush{
     constructor(glContext, canvas) {
         super(glContext, canvas);
 
+        this.startPos = [0,0];
         this.anchorPos = [0,0];
         this.endPos = [0,0];
         this.mutable = true;
@@ -11,8 +12,13 @@ class GLPolygonBrush extends GLBrush{
 
     interceptKeyEvent(event) {
         if(event.keyCode == 13) {
+            this.vertices.push(this.endPos[0]);
+            this.vertices.push(this.endPos[1]);
+            this.vertices.push(this.startPos[0]);
+            this.vertices.push(this.startPos[1]);
             this.finalize = true;
-            console.log("FINALIZE");
+            super.finalizeStroke();
+            this.activeObject = null;
         }
     }
 
@@ -23,24 +29,25 @@ class GLPolygonBrush extends GLBrush{
         obj.primitiveType = this.ctx.LINES;
         super.strokeBegin(obj);
         if(this.first) {
+            this.startPos[0] = pos.x;
+            this.startPos[1] = pos.y;
+            this.finalize = false;
             super.stroke(pos);
         }
     }
     strokeEnd(pos) {
         this.vertices = this.construct();
-        if(this.finalize) {
-            super.strokeEnd(pos);
-        }
         //Finalize buffer
     }
     stroke(pos) {
+        if(this.finalize) return;
         if(this.first) {
             super.stroke(pos);
             this.first = false;
         }
         this.endPos[0] = pos.x;
         this.endPos[1] = pos.y;
-        this.activeObject.positionBuffer.overrideVertex(pos, 1);
+        //this.activeObject.positionBuffer.overrideVertex(pos, 1);
         //super.stroke(pos);
     }
 

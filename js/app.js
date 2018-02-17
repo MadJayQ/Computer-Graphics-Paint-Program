@@ -14,6 +14,7 @@ var includes = [
     "js/brushes/GLLineBrush.js",
     "js/brushes/GLPolygonBrush.js",
     "js/brushes/GLCircleBrush.js",
+    "js/brushes/GLTriangleBrush.js"
 ];
 
 var start = 0;
@@ -32,7 +33,7 @@ class App {
         var canvas = $('#paintCanvas')[0];
         this.renderer = new GLCanvas(canvas);
         this.cursor = new GLCursor(this.renderer);
-        this.activeBrush = new GLPolygonBrush(this.renderer.gl, canvas);
+        this.activeBrush = new GLTriangleBrush(this.renderer.gl, canvas);
         console.log("Running WebGL Version: " + this.renderer.gl.getParameter(this.renderer.gl.VERSION));
         this.glInitCallback();
     }
