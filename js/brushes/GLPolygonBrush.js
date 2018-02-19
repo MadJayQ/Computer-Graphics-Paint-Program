@@ -16,6 +16,7 @@ class GLPolygonBrush extends GLBrush{
             this.vertices.push(this.endPos[1]);
             this.vertices.push(this.startPos[0]);
             this.vertices.push(this.startPos[1]);
+            this.activeObject.primitiveType = (this.filled) ? this.ctx.TRIANGLE_FAN : this.ctx.LINES
             this.finalize = true;
             super.finalizeStroke();
             this.activeObject = null;

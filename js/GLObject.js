@@ -10,6 +10,15 @@ class GLObject {
             0,
             0 
         );
+
+        this.colorBuffer = new GLBuffer(
+            glContext,
+            4,
+            glContext.FLOAT,
+            false,
+            0,
+            0
+        );
     }
 
     setupBufferAttributes(attribute, buffer) {

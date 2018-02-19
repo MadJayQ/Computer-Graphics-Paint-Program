@@ -9,6 +9,14 @@ class GLMutableObject extends GLObject {
             0,
             0 
         );
+        this.colorBuffer = new GLStreamableBuffer(
+            glContext,
+            4,
+            glContext.FLOAT,
+            false,
+            0,
+            0
+        );
         this.primitiveType = glContext.LINE_STRIP;
     }
 };

@@ -16,6 +16,12 @@ class GLCanvas {
 
     }
 
+    interceptKeyEvent(event) {
+        if(event.keyCode == 90 && event.getModifierState("Control")) {
+            this.objects.pop();
+        }
+    }
+
     allocateObject(mutable = false) {
         var obj = (mutable) ? new GLMutableObject(this.gl) : new GLObject(this.gl);
         this.objects.push(obj);
@@ -29,7 +35,7 @@ class GLCanvas {
 
     }
 
-    clear(col = BLUE) {
+    clear(col = WHITE) {
         this.gl.clearColor(col.r, col.g, col.b, col.a);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
     }
@@ -37,7 +43,6 @@ class GLCanvas {
     setupDraw() {
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
         this.clear();
-        //this.gl.enable(this.gl.DEPTH_TEST);
         this.programs.get("MAIN").enable();
     }
 
@@ -53,12 +58,17 @@ class GLCanvas {
         var globals = GlobalVars.getInstance();
         var mathhelper = MathHelper.getInstance();
 
-        var vertexLocation = this.programs.get("MAIN").getAttributeLocation("vPosition");
+        var vertexLocation = this.programs.get("MAIN").getAttributeLocation("a_position");
+        var colorLocation = this.programs.get("MAIN").getAttributeLocation("a_color");
         var matrixLocation = this.programs.get("MAIN").getUniformLocation("u_viewMatrix");
+
+        console.log("COLOR LOCATION: " + colorLocation);
 
         var m = MatrixBuilder.identity();
 
         obj.setupBufferAttributes(vertexLocation, obj.positionBuffer);
+        obj.setupBufferAttributes(colorLocation, obj.colorBuffer);
+        
         this.gl.uniformMatrix4fv(matrixLocation, false, m);
         obj.draw();
     }

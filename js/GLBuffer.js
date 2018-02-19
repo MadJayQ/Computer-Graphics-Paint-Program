@@ -18,7 +18,7 @@ class GLBuffer {
         this.ctx.bindBuffer(this.ctx.ARRAY_BUFFER,this.bufferHandle);
         this.ctx.bufferData(
             this.ctx.ARRAY_BUFFER,
-            new Float32Array(arr), 
+            arr, 
             this.ctx.STATIC_DRAW
         );
     }

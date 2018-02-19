@@ -11,7 +11,7 @@ class GLRectangleBrush extends GLBrush{
     strokeBegin(obj, pos) {
         this.anchorPos[0] = pos.x;
         this.anchorPos[1] = pos.y;
-        obj.primitiveType = this.ctx.TRIANGLE_FAN;
+        obj.primitiveType = (this.filled) ? this.ctx.TRIANGLE_FAN : this.ctx.LINE_LOOP;
         super.strokeBegin(obj);
     }
     strokeEnd(pos) {

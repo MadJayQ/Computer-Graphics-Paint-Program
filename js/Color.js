@@ -5,6 +5,15 @@ class Color {
         this.b = b / 255;
         this.a = a / 255;
     }
+
+    serialize() {
+        return [
+            this.r,
+            this.g,
+            this.b,
+            this.a
+        ];
+    }
 };
 
 var RED = new Color(255, 0, 0, 255);

@@ -22,6 +22,14 @@ class GLCursor {
         this.onPolygonEnd = (pos) => {console.log("Polygon End");};
     }
 
+    /*
+        1920, 1080
+        300, 500
+        GLX = (300 - (1920/2)) / (1920/2)
+        GLY = ((1080/2) - 500) / (1080/2)
+        (-0.6875, 0.074)
+    */
+
     translateEventCoordinates(event) {
         var x = event.clientX; // x coordinate of a mouse pointer
         var y = event.clientY; // y coordinate of a mouse pointer

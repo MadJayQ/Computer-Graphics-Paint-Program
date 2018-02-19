@@ -10,7 +10,7 @@ class GLCircleBrush extends GLBrush{
     strokeBegin(obj, pos) {
         this.anchorPos[0] = pos.x;
         this.anchorPos[1] = pos.y;
-        obj.primitiveType = this.ctx.LINE_STRIP;
+        obj.primitiveType = (this.filled) ? this.ctx.TRIANGLE_FAN : this.ctx.LINE_STRIP;
         super.strokeBegin(obj);
     }
     strokeEnd(pos) {
@@ -39,7 +39,7 @@ class GLCircleBrush extends GLBrush{
             p.push(py);
         }
 
-        p = p.concat(a, b);
+        //p = p.concat(a, b);
 
         return p;
     }
